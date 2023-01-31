@@ -1,0 +1,92 @@
+
+.squareBase {
+  width: 78px;
+  height: 78px;
+  border: solid 1px black;
+  background-color: green;
+  display: flex;
+  margin: auto;
+}
+
+.chipBox {
+  background-color: transparent;
+  width: 56px;
+  height: 56px;
+  perspective: 100px;
+  margin: auto;
+}
+
+.chipButton {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  margin: auto;
+  border: none;
+}
+
+.noChip {
+  background-color: transparent;
+  border-radius: 50%
+}
+
+.whiteChip {
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,0.4);
+  background-color: #f8f8f8;
+  color: black;
+  border-radius: 50%
+}
+
+.blackChip {
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,0.4);
+  background-color: #262626;
+  color: white;
+  border-radius: 50%;
+}
+
+.candidateChip:hover {
+  border: solid 3px rgb(182, 181, 181);
+  cursor: pointer;
+}
+
+.candidateChipBlack {
+  background-color: transparent;
+  border-radius: 50%;
+  border: dashed 1px black;
+}
+
+.candidateChipWhite {
+  background-color: transparent;
+  border-radius: 50%;
+  border: dashed 1px white;
+}
+
+.lastMove {
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  z-index: 3;
+  margin: auto;
+}
+
+.uLdot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: black;
+  margin: -2px;   /* margin negative half of the width and height of the circle */
+  position: relative;
+  top: -3px;
+  right: 3px;
+  z-index: 10;
+}
+
+.uLsquareId {
+  height: 8x;
+  font-size: 7px;
+  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+  top: 1px;
+  left: 1px;
+  z-index: 11;
+}

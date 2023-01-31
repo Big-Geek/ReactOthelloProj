@@ -1,0 +1,460 @@
+import React, { useState, useEffect, useContext, useReducer } from 'react';
+import ReactDOM from 'react-dom/client';
+import 'Components/Game/gameStyles.css';
+import 'Components/Square/squareStyles.css';
+import { Square, CollectionsNamespace as CN, UtilitiesClass as UC, StructuresClass as SC } from 'Components';
+import classNames from 'classnames';
+
+interface iBoardProps {
+    playerTurn: CN.GamePlayer
+}
+
+
+
+// const squareArray = (): iSquareProps[] => {
+//     let tempArray: iSquareProps[] = [];
+
+//     gridSizeList.map((rowIndex) => (
+//                     {
+//                         gridSizeList.map((i) => (
+                                
+//                                     squareId={UC.calculateCellNumber(rowIndex, gridSizeList.length, i)}
+//                                     rowIndex={rowIndex}
+//                                     rowPosition={i}
+//                                     gridSize={gridSizeList.length}
+//                                     playerTurn={playerTurn}
+//                                     onSquareClick={onSquareClick}
+//                                     lastMove={lastMove}
+//                                     key={"square" + UC.calculateCellNumber(rowIndex, gridSizeList.length, i).toString()}
+//                                 />
+//                         ))}
+//         ));
+
+//     return tempArray;
+// } 
+
+// const iSquare = ( {})
+
+// const aSquare = ( {    rowIndex: number,
+//     rowPosition: number,
+//     gridSize: number,
+//     squareId: number,
+//     chipState: CN.ChipState,
+//     lastMove: SC.Nullable<number>,
+//     playerTurn: CN.GamePlayer,
+//     onSquareClick?: any} ): iSquareProps => {
+//         return iSquareProps { rowIndex}
+//     }
+
+const gridSizeList: number[] = Array.from(Array(8).keys());
+
+// var iSquareArray: iSquareBase[] = buildArray();
+
+function buildSquareArray(onSquareClickEvent?: any): iSquareProps[] {
+    let squareArray: iSquareProps[] = [];
+    gridSizeList.forEach(
+        (rowIndex) =>
+            gridSizeList.forEach((i: number) => {
+                let id: number = UC.calculateCellNumber(rowIndex, gridSizeList.length, i);
+                let chipState: CN.ChipState = UC.InitChipState(id);
+                squareArray.push(
+                    {
+                        squareId: id,
+                        rowIndex: rowIndex,
+                        rowPosition: i,
+                        gridSize: gridSizeList.length,
+                        key: ("square" + id),
+                        chipState: chipState,
+                        lastMove: null,
+                        playerTurn: CN.GamePlayer.Black,
+                        onSquareClick: onSquareClickEvent
+                    }
+                )
+            }
+            )
+    )
+
+    return squareArray;
+}
+
+
+
+// var iSquareArray= (): iSquareBase[] =>  {
+//     let squareArray: iSquareBase[] = [];
+
+//     gridSizeList.forEach(
+//         (rowIndex) =>
+//         {
+//             gridSizeList.forEach(
+//                 squareArray.concat(
+//                     {
+                        
+//                     } 
+//                 )
+//             )
+//         }
+//     )
+
+//         gridSizeList.map((rowIndex) => (
+                    
+//                         gridSizeList.map((i: number) => (
+//                                 isb.concat({
+//                                     squareId={UC.calculateCellNumber(rowIndex, gridSizeList.length, i)}
+//                                     rowIndex={rowIndex}
+//                                     rowPosition={i}
+//                                     gridSize={gridSizeList.length}
+//                                     // playerTurn={playerTurn}
+//                                     // onSquareClick={onSquareClick}
+//                                     // lastMove={lastMove}
+//                                     key={"square" + UC.calculateCellNumber(rowIndex, gridSizeList.length, i).toString()}
+//                                 }
+//                         ))
+//         )))
+
+//         return sq
+// }
+
+export const BoardX = ( props: iBoardProps ) => {
+    
+    const [ lastMove, setLastMove ] = useState<SC.Nullable<number>>(null);
+    const [ winner, setWinner ] = useState(false);
+    const [ history, setHistory ] = useState<number[]>([]);
+    const [ translatedHistory, setTranslatedHistory ] = useState<string[]>([]);
+    const [ playerTurn, setTurn ] = useState(CN.GamePlayer.Black);
+    const [ squares, setSquares ] = useState<iSquareProps[]>([]);
+
+    const boardSquareArray = (): iSquareProps[] =>  {
+        let squareArray: iSquareProps[] = [];
+        gridSizeList.forEach(
+            (rowIndex) =>
+                gridSizeList.forEach((i: number) => {
+                    let id: number = UC.calculateCellNumber(rowIndex, gridSizeList.length, i);
+                    let chipState: CN.ChipState = UC.InitChipState(id);
+                    squareArray.push(
+                        {
+                            squareId: id,
+                            rowIndex: rowIndex,
+                            rowPosition: i,
+                            gridSize: gridSizeList.length,
+                            key: ("square" + id),
+                            chipState: chipState,
+                            lastMove: null,
+                            playerTurn: CN.GamePlayer.Black,
+                            onSquareClick: onSquareClick
+                        }
+                    )
+                }
+                )
+        )
+    
+        return squareArray;
+    }
+
+    const filterSquaresByRowIndex = (rowIndex: number): iSquareProps[] => {
+          return squares.filter(square => square.rowIndex === rowIndex).sort();
+      }
+
+
+
+    const setCurrentTurn = () => { setTurn(props.playerTurn) }
+    const onSquareClick = (squareProps: iSquareProps) => {
+        console.log("cellHist: " + squareProps.squareId);
+        console.log("translated: " + UC.translateCellNumToAlphaNum(squareProps.squareId))
+        let transCellHist: string = UC.translateCellNumToAlphaNum(squareProps.squareId);
+        // if (history.length === 0)
+        // {
+        //     setHistory([cellHist]);
+        //     setTranslatedHistory([transCellHist]);
+        //     setLastMove(cellHist);
+        // }
+        // else 
+        if (!history.includes(squareProps.squareId))
+        {
+            setHistory(history.concat(squareProps.squareId));
+            setTranslatedHistory(translatedHistory.concat(transCellHist));
+            setLastMove(squareProps.squareId);
+        }
+    }
+
+    // useEffect(() => {
+    //     setCurrentTurn();
+    //     //console.log("BoardX: componentDidUpdate");
+    //     //console.log(history);
+    //   }, [props]);
+
+          
+      // Functional Component LifeCycle "componentDidMount" 
+    //  because empty (or no) value passed as second parameter
+    useEffect(() => {
+        setSquares(boardSquareArray());
+        setCurrentTurn();
+        //console.log("componentDidMount");
+      }, []);
+
+    //   useEffect(() => {
+    //     //console.log("BoardX: componentDidUnmount");
+
+    //     // Console History wasn't logging equal to button click event until 
+    //     // the logging was moved into the empty useEffect "componentDidUnmount" event
+    //     // console.log(history);
+    //     // console.log(translatedHistory);
+    //     console.log("lastMove: " + lastMove)
+    //   });
+
+    //   const rowElements = (): JSX.Element => { 
+    //     return (
+    //         <>
+    //             { gridSizeList.map( i=> (
+    //                 <> 
+    //                     <Row 
+    //                         key={"row" + i.toString()}
+    //                         rowIndex={i} 
+    //                         gridSizeList={gridSizeList}
+    //                         playerTurn={playerTurn}
+    //                         lastMove={lastMove}
+    //                         onSquareClick={(squareProps: iSquareProps) => onSquareClick(squareProps)}
+    //                         ></Row>
+    //                 </>
+    //                 ))
+    //             }
+    //         </>);
+    // }
+
+    
+
+    const rows = (): JSX.Element => {
+        return (
+            <>
+                {gridSizeList.map((rowIndex) => (
+                    <>
+                        <div className="rowBase" id={"row" + rowIndex.toString()}>
+                            {
+                                filterSquaresByRowIndex(rowIndex).map((i) => (
+                                    <>
+                                        <SquareX
+                                            squareId={i.squareId}
+                                            rowIndex={i.rowIndex}
+                                            rowPosition={i.rowPosition}
+                                            gridSize={i.gridSize}
+                                            playerTurn={playerTurn}
+                                            onSquareClick={onSquareClick}
+                                            lastMove={lastMove}
+                                            chipState={i.chipState}
+                                            key={i.key}
+                                        />
+                                    </>
+                                ))
+
+
+
+                            }
+                        </div>
+                    </>
+                ))
+                }
+            </>);
+    }
+
+      return (
+        <>
+        <div>
+            { "Board Turn: " + playerTurn.toString() }
+            <div className="boardBase" id="gameBoard">
+            {/* { gridSizeList.map( i=> (
+                <> 
+                    <Row 
+                        key={"row" + i.toString()}
+                        rowIndex={i} 
+                        gridSizeList={gridSizeList}
+                        playerTurn={thisTurn}
+                        lastMove={lastMove}
+                        appendCellHistory={(cellHist: number) => appendCellHistory(cellHist)}
+                        ></Row>
+                </>
+                ))
+            } */}
+            {rows()}
+            </div>
+        </div> 
+        </>);
+      }
+
+// interface iRowProps {
+//     rowIndex: number;
+//     gridSizeList: number[];
+//     playerTurn: CN.GamePlayer;
+//     onSquareClick: any;
+//     lastMove: SC.Nullable<number>;
+// }
+
+// export const Row = (props: iRowProps) => {
+
+//     return (
+//         <div className="rowBase" id={"row" + props.rowIndex.toString()}>
+//          {
+
+
+//             props.gridSizeList.map( i=> (
+//             <> 
+//                 <SquareX 
+//                     squareId={UC.calculateCellNumber(props.rowIndex, props.gridSizeList.length, i)}
+//                     gridSizeList={props.gridSizeList} 
+//                     playerTurn={props.playerTurn}
+//                     onSquareClick={props.onSquareClick}
+//                     lastMove={props.lastMove}
+//                     // chipState={}
+//                     key={"square" + UC.calculateCellNumber(props.rowIndex, props.gridSizeList.length, i).toString()}
+//                 />
+//             </>
+//             ))} 
+//         </div>
+//         );
+// }
+
+interface iSquareBase {
+    squareId: number;
+    rowIndex: number;
+    rowPosition: number;
+    gridSize: number;
+    key: any;
+}
+
+interface iSquareAdditional {
+    chipState: CN.ChipState;
+    lastMove: SC.Nullable<number>;
+    playerTurn: CN.GamePlayer;
+    onSquareClick?: any;
+}
+
+interface iSquareProps extends iSquareBase, iSquareAdditional {
+    // rowIndex: number;
+    // rowPosition: number;
+    // gridSize: number;
+    // squareId: number;
+    // chipState: CN.ChipState;
+    // lastMove: SC.Nullable<number>;
+    // playerTurn: CN.GamePlayer;
+    // onSquareClick?: any;
+}
+
+interface iSquarePropsArray extends Array<iSquareProps> {}
+
+const updateSquareState = (cellId: number, chipState: CN.ChipState, changeChipState: any, thisTurn: CN.GamePlayer, appendCellHistory?: any): void => {
+
+    if (chipState === CN.ChipState.candidateChip)
+    {
+        changeChipState(thisTurn === CN.GamePlayer.Black ? CN.ChipState.blackChip : CN.ChipState.whiteChip);
+    }
+
+    // else if (chipState === CN.ChipState.blackChip)
+    // {
+    //     changeChipState(CN.ChipState.whiteChip);
+    // }
+    // else if (chipState === CN.ChipState.whiteChip)
+    // {
+    //     changeChipState(CN.ChipState.blackChip);
+    // }
+}
+
+function calcSquareId(props: iSquareProps) {
+
+}
+
+export const SquareTag = (props: iSquareProps) => {
+    const [ chipState, setChipState ] = useState(CN.ChipState.noChip);
+
+    return (
+        <>
+            <div id={"sq" + props.squareId.toString()} className="squareBase">
+                <div className={classNames({ 'uLdot': CN.dottedCorners.includes(props.squareId) })}></div>
+                <div className="chipBox">
+
+                    <button id={"b" + props.squareId.toString()}
+                        //onClick={this.handleClick}
+                        className={classNames({
+                            'chipButton': true,
+                            'noChip': props.chipState === CN.ChipState.noChip,
+                            'blackChip': props.chipState === CN.ChipState.blackChip,
+                            'whiteChip': props.chipState === CN.ChipState.whiteChip,
+                            'candidateChip': props.chipState === CN.ChipState.candidateChip,
+                            'candidateChipWhite': (props.chipState === CN.ChipState.candidateChip && props.playerTurn === CN.GamePlayer.White),
+                            'candidateChipBlack': (props.chipState === CN.ChipState.candidateChip && props.playerTurn === CN.GamePlayer.Black),
+                        })}
+                        onClick={() => {
+                            updateSquareState(props.squareId, props.chipState, setChipState, props.playerTurn);
+                            props.onSquareClick(props.squareId);
+
+                        }
+                        }>
+                        <div id={"lm" + props.squareId.toString()}
+                            className={classNames({
+                                'lastMove': ((props.chipState === CN.ChipState.blackChip || props.chipState === CN.ChipState.whiteChip) && props.lastMove === props.squareId)
+                            })}></div>
+                    </button>
+
+                </div>
+            </div>
+        </>
+    );
+}
+
+
+// function SquareX(props: iSquareProps) {
+export const SquareX = ( props: iSquareProps ) => {
+    const [ chipState, setChipState ] = useState(CN.ChipState.noChip);
+    const [ playerTurn, setTurn ] = useState<SC.Nullable<CN.GamePlayer>>(CN.GamePlayer.Black);
+    let squareId = props.squareId;
+
+    // Functional Component LifeCycle "componentDidUpdate" 
+    //  because value passed as second parameter
+    useEffect(() => {
+        //setSquareId(props.squareId);
+        //setChipState(UC.InitChipState(props.squareId));
+        setTurn(props.playerTurn)
+        //console.log("componentDidUpdate");
+      }, [props]);
+
+      // Functional Component LifeCycle "componentDidMount" 
+    //  because empty (or no) value passed as second parameter
+      useEffect(() => {
+        setChipState(UC.UpdateChipState(props.squareId));
+        setTurn(props.playerTurn)
+        //console.log("componentDidMount");
+      }, []);
+
+    return(
+            <>
+            <div id={"sq" + props.squareId.toString()} className="squareBase">
+            <div className={classNames({'uLdot': CN.dottedCorners.includes(props.squareId) })}></div>
+                <div className="chipBox">
+                    
+                    <button id={"b" + props.squareId.toString()} 
+                    //onClick={this.handleClick}
+                    className={classNames({
+                        'chipButton': true,  
+                        'noChip': chipState === CN.ChipState.noChip, 
+                        'blackChip': chipState === CN.ChipState.blackChip,
+                        'whiteChip': chipState === CN.ChipState.whiteChip,
+                        'candidateChip': chipState === CN.ChipState.candidateChip,
+                        'candidateChipWhite': (chipState === CN.ChipState.candidateChip && playerTurn === CN.GamePlayer.White),
+                        'candidateChipBlack': (chipState === CN.ChipState.candidateChip && playerTurn === CN.GamePlayer.Black),
+                    })}
+                    onClick={() => 
+                    {
+                        updateSquareState(props.squareId, chipState, setChipState, props.playerTurn);
+                        props.onSquareClick( props.squareId );
+
+                    }
+                    }>
+                    <div id={"lm" + props.squareId.toString()} 
+                        className={classNames({
+                            'lastMove': ((chipState === CN.ChipState.blackChip || chipState === CN.ChipState.whiteChip) && props.lastMove === props.squareId )
+                    })}></div>
+                    </button>
+                    
+                </div>
+            </div>
+            </>
+    );
+
+}

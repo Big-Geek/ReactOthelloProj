@@ -1,0 +1,129 @@
+
+.boardBase {
+    color: blue; 
+    width: 640px; 
+    height: 640px; 
+    background-color: lime;
+    border: solid 1px black;
+    position: relative;
+}
+
+.rowBase {
+    width: 640px;
+    height: 80px;
+    display: flex;
+}
+
+.squareBase {
+    width: 78px;
+    height: 78px;
+    border: solid 1px black;
+    background-color: green;
+    display: flex;
+    margin: auto;
+}
+
+.chipBox {
+    background-color: transparent;
+    width: 56px;
+    height: 56px;
+    perspective: 100px;
+    margin: auto;
+}
+
+.chipButton {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    margin: auto;
+    border: none;
+}
+
+.noChip {
+    background-color: transparent;
+    border-radius: 50%
+}
+
+.whiteChip {
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.4);
+    background-color: #f8f8f8;
+    color: black;
+    border-radius: 50%
+}
+
+.blackChip {
+    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.4);
+    background-color: #262626;
+    color: white;
+    border-radius: 50%;
+}
+
+.candidateChip {
+    background-color: transparent;
+    border-radius: 50%;
+    border: solid 2px gray;
+}
+
+.candidateChip:hover {
+    border: solid 3px rgb(182, 181, 181);
+}
+
+.lastMove {
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    z-index: 3;
+    margin: auto;
+}
+
+.blackDot {
+    height: 20px;
+    width: 20px;
+    background-color: black;
+    border-radius: 50%;
+    display: inline-block;
+    border: solid 1px black;
+    vertical-align: top;
+  }
+
+  .whiteDot {
+    height: 20px;
+    width: 20px;
+    background-color: white;
+    border-radius: 50%;
+    display: inline-block;
+    border: solid 1px black;
+    vertical-align: top;
+  }
+
+  .winnerClass {
+    z-index: 99;
+    width: 100%;
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 150px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    opacity: 70%;
+    -webkit-text-stroke-width: 3px;
+    margin: auto;
+    padding: auto;
+    transform: translate(-50%,-50%);
+    top: 50%; left: 50%;
+  }
+
+  .winnerWhite {
+    -webkit-text-stroke-color: black;
+    color: white;
+  }
+
+  .winnerBlack {
+    -webkit-text-stroke-color: white;
+    color: black;
+  }
+
+  .noWinnerYet {
+    visibility: hidden;
+  }
