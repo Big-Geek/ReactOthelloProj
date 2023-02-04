@@ -3,6 +3,12 @@
 
 The project is built as functional components in React and Typescript. 
 
+## Install Requirements
+
+- `npm install classnames`
+- `npm install babel-cli babel-core --save-dev`
+
+
 # Structural Components
 ## 3 Major Structures
 The project is composed of three major structures:
